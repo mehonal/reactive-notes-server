@@ -16,8 +16,9 @@ app.get('/', (req, res) => {
 })
 
 
-app.get('/api/get-notes', (req, res) => {
-    res.json(Note.find())
+app.get('/api/get-notes', async (req, res) => {
+    notes = await Note.find().exec();
+    res.json(notes)
 })
 
 app.get('/api/get-note/:id', (req, res) => {
