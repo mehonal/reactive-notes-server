@@ -36,6 +36,15 @@ app.post('/api/add-note', (req, res) => {
     res.json(newNote)
 })
 
+app.post('/api/update-note/:id', async (req, res) => {
+    id = req.params.id
+    note = await Note.findById(id).exec()
+    note.title = req.body.title
+    note.content = req.body.content
+    note.save()
+    res.json(note)
+})
+
 app.listen(port, () => {
   console.log(`Started Express at localhost:${port}`)
 })
