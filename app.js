@@ -1,21 +1,9 @@
 const express = require('express')
 const app = express()
 const port = 3000
-require('./db.js')
+const Note = require('./models/Note.js')
 
-// temporary notes (to be replaced with database later)
-notes = [
-    {
-        id: 1,
-        title: 'Note #1',
-        content: 'Note content for note one...'
-    },
-    {
-        id: 2,
-        title: 'Note #2',
-        content: 'Note content for note two...'
-    }
-]
+app.use(express.json())
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -29,13 +17,22 @@ app.get('/', (req, res) => {
 
 
 app.get('/api/get-notes', (req, res) => {
-    res.json(notes)
+    res.json(Note.find())
 })
 
 app.get('/api/get-note/:id', (req, res) => {
     id = req.params.id
-    note = notes.find(note => note.id == id)
+    note = Note.findById(id)
     res.json(note)
+})
+
+app.post('/api/add-note', (req, res) => {
+    newNote = new Note({
+        title: req.body.title,
+        content: req.body.content
+    })
+    newNote.save()
+    res.json(newNote)
 })
 
 app.listen(port, () => {
