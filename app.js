@@ -17,13 +17,13 @@ app.get('/', (req, res) => {
 
 
 app.get('/api/get-notes', async (req, res) => {
-    notes = await Note.find().exec();
+    notes = await Note.find().exec()
     res.json(notes)
 })
 
-app.get('/api/get-note/:id', (req, res) => {
+app.get('/api/get-note/:id', async (req, res) => {
     id = req.params.id
-    note = Note.findById(id)
+    note = await Note.findById(id).exec()
     res.json(note)
 })
 
